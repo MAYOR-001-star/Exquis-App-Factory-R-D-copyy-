@@ -1,0 +1,8 @@
+https://www.serverless.com/framework/docs/providers/aws/events/http-api#lambda-request-authorizers
+https://youtu.be/9a74LuU2EoU
+https://towardsaws.com/5-ways-to-speed-up-your-lambda-function-2163f63ffc49
+https://lumigo.io/learn/aws-lambda-timeout-best-practices
+
+
+//
+https://gemini.google.com/app/e9a6cc0f33fd1f32
