@@ -7,12 +7,21 @@ import { AuthModule } from './core/auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '../.env',
+    }),
+
     MongooseModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        uri: config.get<string>('MONGO_URL'),
-      }),
+      useFactory: (config: ConfigService) => {
+        const uri = config.get<string>('MONGO_URI');
+        console.log('Loaded MONGO_URI:', uri);
+        if (!uri) {
+          throw new Error('MONGO_URI is not defined in .env');
+        }
+        return { uri };
+      },
     }),
     AuthModule,
   ],
