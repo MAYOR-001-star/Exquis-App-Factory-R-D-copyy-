@@ -16,6 +16,6 @@ export class LoginUserDto {
   @IsEmail({}, { message: 'Email must be valid' })
   email: string;
 
-  @IsNotEmpty({ message: 'Password is required' })
+  @IsNotEmpty({ message: 'Password must be at least 6 characters' })
   password: string;
 }
