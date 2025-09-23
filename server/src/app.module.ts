@@ -1,16 +1,20 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './core/auth/auth.module';
 
-const url =
-  'mongodb+srv://exquis_user:GL96sl6ishfSb75u@auth-gateway-db.zfwyaux.mongodb.net/?retryWrites=true&w=majority&appName=auth-gateway-db';
-
 @Module({
   imports: [
-    MongooseModule.forRoot(url),
+    ConfigModule.forRoot({ isGlobal: true }),
+    MongooseModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        uri: config.get<string>('MONGO_URL'),
+      }),
+    }),
     AuthModule,
   ],
   controllers: [AppController],
