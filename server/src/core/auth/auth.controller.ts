@@ -1,36 +1,48 @@
-import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
+// src/auth/auth.controller.ts
+import { Body, Controller, Post } from '@nestjs/common';
+import { ApiBody, ApiTags, ApiOperation } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { RegisterUserDto, LoginUserDto } from './dto/auth.dto';
+import {
+  RegisterUserDto,
+  LoginUserDto,
+  RequestPasswordResetDto,
+  ResetPasswordDto,
+} from './dto/auth.dto';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  // REGISTER
   @Post('register')
-  async register(@Body() registerUserDto: RegisterUserDto) {
-    return this.authService.register(registerUserDto);
+  @ApiOperation({ summary: 'Register a new user' })
+  @ApiBody({ type: RegisterUserDto })
+  register(@Body() dto: RegisterUserDto) {
+    return this.authService.register(dto);
   }
 
+  // LOGIN
   @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto) {
-    return this.authService.login(loginUserDto);
+  @ApiOperation({ summary: 'User login' })
+  @ApiBody({ type: LoginUserDto })
+  login(@Body() dto: LoginUserDto) {
+    return this.authService.login(dto);
   }
 
-  // 🧩 Step 1: Initiate password reset
+  // REQUEST RESET PASSWORD (SEND OTP)
   @Post('request-password-reset')
-  async requestPasswordReset(@Body('email') email: string) {
-    if (!email) throw new BadRequestException('Email is required');
-    return this.authService.requestPasswordReset(email);
+  @ApiOperation({ summary: 'Request a password reset OTP' })
+  @ApiBody({ type: RequestPasswordResetDto })
+  requestReset(@Body() dto: RequestPasswordResetDto) {
+    return this.authService.requestPasswordReset(dto.email);
   }
 
-  // 🔐 Step 2: Reset password with valid token
+  // VERIFY OTP + RESET PASSWORD
   @Post('reset-password')
-  async resetPassword(
-    @Body('token') token: string,
-    @Body('newPassword') newPassword: string,
-  ) {
-    if (!token || !newPassword)
-      throw new BadRequestException('Token and new password are required');
-    return this.authService.resetPassword(token, newPassword);
+  @ApiOperation({ summary: 'Verify OTP and reset password' })
+  @ApiBody({ type: ResetPasswordDto })
+  resetPassword(@Body() dto: ResetPasswordDto) {
+    return this.authService.resetPassword(dto.email, dto.otp, dto.newPassword);
   }
 }

@@ -27,6 +27,13 @@ export class User extends Document {
   @Prop({ default: true })
   isActive: boolean;
 
+  // 🔹 OTP-related fields
+  @Prop({ type: String, default: null })
+  resetOtp?: string;
+
+  @Prop({ type: Date, default: null })
+  resetOtpExpires?: Date;
+
   @Prop({ default: null })
   deletedAt?: Date;
 }

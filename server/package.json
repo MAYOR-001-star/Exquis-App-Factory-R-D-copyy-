@@ -25,6 +25,7 @@
 		"synth:staging": "cdk synth -c which=api-staging --toolkit-stack-name sample-app-toolkit --verbose"
 	},
 	"dependencies": {
+		"@nestjs-modules/mailer": "^2.0.2",
 		"@nestjs/common": "^11.1.6",
 		"@nestjs/config": "^4.0.2",
 		"@nestjs/core": "^11.1.6",
@@ -38,6 +39,7 @@
 		"class-validator": "^0.14.2",
 		"helmet": "^8.1.0",
 		"mongoose": "^8.18.2",
+		"nodemailer": "^7.0.9",
 		"reflect-metadata": "^0.2.2",
 		"rxjs": "^7.8.2",
 		"swagger-ui-express": "^5.0.1"
