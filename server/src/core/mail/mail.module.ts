@@ -3,21 +3,23 @@ import { Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { MailService } from './mail.service';
 import { MailController } from './mail.controller';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(), // make sure .env variables are loaded
     MailerModule.forRoot({
       transport: {
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
+        host: process.env.ZEPTO_HOST,
+        port: Number(process.env.ZEPTO_PORT),
+        secure: false, // ZeptoMail uses TLS on 587 (so false)
         auth: {
-          user: process.env.MAIL_USER,
-          pass: process.env.MAIL_PASS,
+          user: process.env.ZEPTO_USER,
+          pass: process.env.ZEPTO_PASS,
         },
       },
       defaults: {
-        from: '"ExquisApp" <no-reply@exquisapp.com>',
+        from: process.env.ZEPTO_FROM, // e.g. "Example Team <auth@exquisappfactory.com>"
       },
     }),
   ],

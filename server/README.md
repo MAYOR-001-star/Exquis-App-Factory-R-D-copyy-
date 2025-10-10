@@ -37,6 +37,21 @@ This project is built with **NestJS** and **Node.js**.
     npm run start     # For production build
     ```
 
+# Server
+PORT=""
+NODE_ENV=""
+
+# Database
+MONGO_URI=""
+
+# ZeptoMail
+ZEPTO_HOST=""
+ZEPTO_PORT=""
+ZEPTO_USER=""
+ZEPTO_PASS=""
+ZEPTO_FROM=""
+
+
 ## Usage
 
 Client applications redirect users to CAS for authentication. Upon successful login, CAS issues **secure tokens** (e.g., JWTs) which clients then use to authorize requests to backend APIs. Backend APIs can validate these tokens via CAS or locally.
