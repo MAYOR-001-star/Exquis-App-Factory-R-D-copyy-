@@ -8,7 +8,7 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import { RegisterUserDto, LoginUserDto } from './dto/auth.dto';
 import { User } from './schema/userSchema';
-import { MailService } from 'src/mail/mail.service';
+import { MailService } from 'src/core/mail/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +21,8 @@ export class AuthService {
   // REGISTER
   // =============================
   async register(registerUserDto: RegisterUserDto) {
-    const { firstName, lastName, email, password, confirmPassword } = registerUserDto;
+    const { firstName, lastName, email, password, confirmPassword } =
+      registerUserDto;
 
     if (password !== confirmPassword)
       throw new BadRequestException('Passwords do not match');
