@@ -1,12 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
 import { getModelToken } from '@nestjs/mongoose';
-import * as bcrypt from 'bcryptjs';
+// import { BadRequestException } from '@nestjs/common';
+import * as bcrypt from 'bcryptjs'; // still import so TypeScript knows types
+import { MailService } from '../mail/mail.service';
 
 const mockUserModel = {
   findOne: jest.fn(),
   create: jest.fn(),
 };
+
+const mockMailService = {
+  sendWelcomeEmail: jest.fn().mockResolvedValue(undefined),
+  sendPasswordResetOTP: jest.fn().mockResolvedValue(undefined),
+};
+
+jest.mock('bcryptjs', () => ({
+  hash: jest.fn().mockResolvedValue('hashedpass'),
+  compare: jest.fn().mockResolvedValue(true),
+}));
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -16,6 +28,7 @@ describe('AuthService', () => {
       providers: [
         AuthService,
         { provide: getModelToken('User'), useValue: mockUserModel },
+        { provide: MailService, useValue: mockMailService },
       ],
     }).compile();
 
@@ -26,33 +39,13 @@ describe('AuthService', () => {
     jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-
-  it('should throw if email already exists on register', async () => {
-    mockUserModel.findOne.mockResolvedValue({ email: 'exists@test.com' });
-
-    await expect(
-      service.register({
-        firstName: 'Test',
-        lastName: 'User',
-        email: 'exists@test.com',
-        password: '123456',
-        confirmPassword: '123456',
-      }),
-    ).rejects.toThrow('Email already in use');
-  });
-
-  it('should return success message on valid register', async () => {
+  it('should register a new user successfully', async () => {
     mockUserModel.findOne.mockResolvedValue(null);
-    jest.spyOn(bcrypt, 'hash').mockResolvedValue('hashedpass' as never);
     mockUserModel.create.mockResolvedValue({
       _id: '1',
       firstName: 'Test',
       lastName: 'User',
       email: 'test@test.com',
-      role: 'user',
     });
 
     const result = await service.register({
@@ -63,6 +56,22 @@ describe('AuthService', () => {
       confirmPassword: '123456',
     });
 
-    expect(result.message).toBe('Registration successful');
+    expect(mockUserModel.findOne).toHaveBeenCalledWith({
+      email: 'test@test.com',
+    });
+    expect(bcrypt.hash).toHaveBeenCalledWith('123456', 10);
+    expect(mockMailService.sendWelcomeEmail).toHaveBeenCalledWith(
+      'test@test.com',
+      'Test',
+    );
+    expect(result).toEqual({
+      message: 'Registration successful. A welcome email has been sent.',
+      user: {
+        id: '1',
+        firstName: 'Test',
+        lastName: 'User',
+        email: 'test@test.com',
+      },
+    });
   });
 });

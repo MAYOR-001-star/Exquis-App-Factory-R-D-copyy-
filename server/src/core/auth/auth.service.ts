@@ -8,7 +8,7 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import { RegisterUserDto, LoginUserDto } from './dto/auth.dto';
 import { User } from './schema/userSchema';
-import { MailService } from 'src/core/mail/mail.service';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class AuthService {
