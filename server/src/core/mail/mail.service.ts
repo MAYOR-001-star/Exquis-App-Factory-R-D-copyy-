@@ -51,7 +51,7 @@ export class MailService {
     const htmlBody = `
   <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f9fafb; padding: 20px;">
     <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);">
-      <h2 style="color: #111827;">Welcome to Example, ${firstName} 👋</h2>
+      <h2 style="color: #111827;">Welcome to exquisappfactory, ${firstName} 👋</h2>
       <p style="color: #374151; font-size: 15px; line-height: 1.6;">
         We’re delighted to have you join our community. Your account has been successfully created, 
         and you’re all set to explore everything our platform has to offer.
@@ -66,7 +66,7 @@ export class MailService {
       <br/><br/>
       <p style="color: #6b7280; font-size: 14px;">If you have any questions, contact our support team anytime at <a href="mailto:support@exquisappfactory.com">support@exquisappfactory.com</a>.</p>
       <br/>
-      <p style="color: #111827;">Best regards,<br/><strong>The Example Team</strong></p>
+      <p style="color: #111827;">Best regards,<br/><strong>The exquisappfactory Team</strong></p>
     </div>
   </div>
 `;
@@ -74,7 +74,7 @@ export class MailService {
     try {
       if (this.zeptoClient) {
         await this.zeptoClient.sendMail({
-          from: { address: this.getFromAddress(), name: 'Example Team' },
+          from: { address: this.getFromAddress(), name: 'exquisappfactory Team' },
           to: [{ email_address: { address: email, name: firstName } }],
           subject: '🎉 Welcome to Our Platform!',
           htmlbody: htmlBody,
@@ -111,7 +111,7 @@ export class MailService {
         If you did not request a password reset, please ignore this email or contact our support team immediately.
       </p>
       <br/>
-      <p style="color: #111827;">Stay secure,<br/><strong>The Example Team</strong></p>
+      <p style="color: #111827;">Stay secure,<br/><strong>The exquisappfactory Team</strong></p>
       <p style="color: #6b7280; font-size: 13px;">Need help? Reach us at <a href="mailto:support@exquisappfactory.com">support@exquisappfactory.com</a></p>
     </div>
   </div>
@@ -120,7 +120,7 @@ export class MailService {
     try {
       if (this.zeptoClient) {
         await this.zeptoClient.sendMail({
-          from: { address: this.getFromAddress(), name: 'Example Team' },
+          from: { address: this.getFromAddress(), name: 'exquisappfactory Team' },
           to: [{ email_address: { address: email } }],
           subject: '🔐 Password Reset OTP',
           htmlbody: htmlBody,
@@ -144,7 +144,7 @@ export class MailService {
   private getFromAddress(): string {
     const from = process.env.ZEPTO_FROM;
     const match = from?.match(/<(.*?)>/);
-    return match ? match[1] : from || 'auth@example.com';
+    return match ? match[1] : from || 'auth@exquisappfactory.com';
   }
 
   // 🧠 Centralized error handler
