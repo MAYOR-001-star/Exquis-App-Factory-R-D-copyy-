@@ -71,7 +71,7 @@
 
 
 import { Injectable, Logger } from '@nestjs/common';
-import axios from 'axios';
+// import axios from 'axios';
 import * as nodemailer from 'nodemailer';
 import { SendMailClient } from 'zeptomail';
 
