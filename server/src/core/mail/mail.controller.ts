@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { MailService } from './mail.service';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiExcludeEndpoint } from '@nestjs/swagger';
 
 @ApiTags('Mail') // 👈 Shows up as "Mail" section in Swagger
 @Controller('mail')
@@ -8,6 +8,7 @@ export class MailController {
   constructor(private readonly mailService: MailService) {}
 
   @Get('test')
+  @ApiExcludeEndpoint()
   @ApiOperation({ summary: 'Send a test welcome email' })
   @ApiResponse({
     status: 200,
